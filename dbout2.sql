@@ -1,0 +1,441 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
+-- Dumped by pg_dump version 17.2 (Debian 17.2-1.pgdg120+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: edge; Type: TABLE; Schema: public; Owner: pi-003
+--
+
+CREATE TABLE public.edge (
+    edgeid integer NOT NULL,
+    edgetypeid bigint NOT NULL,
+    head_node bigint NOT NULL,
+    tail_node bigint NOT NULL
+);
+
+
+ALTER TABLE public.edge OWNER TO "pi-003";
+
+--
+-- Name: edges_edgeid_seq; Type: SEQUENCE; Schema: public; Owner: pi-003
+--
+
+CREATE SEQUENCE public.edges_edgeid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.edges_edgeid_seq OWNER TO "pi-003";
+
+--
+-- Name: edges_edgeid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pi-003
+--
+
+ALTER SEQUENCE public.edges_edgeid_seq OWNED BY public.edge.edgeid;
+
+
+--
+-- Name: edgetype; Type: TABLE; Schema: public; Owner: pi-003
+--
+
+CREATE TABLE public.edgetype (
+    edgetypeid integer NOT NULL,
+    name character varying(64) NOT NULL
+);
+
+
+ALTER TABLE public.edgetype OWNER TO "pi-003";
+
+--
+-- Name: edgetype_edgetypeid_seq; Type: SEQUENCE; Schema: public; Owner: pi-003
+--
+
+CREATE SEQUENCE public.edgetype_edgetypeid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.edgetype_edgetypeid_seq OWNER TO "pi-003";
+
+--
+-- Name: edgetype_edgetypeid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pi-003
+--
+
+ALTER SEQUENCE public.edgetype_edgetypeid_seq OWNED BY public.edgetype.edgetypeid;
+
+
+--
+-- Name: graph; Type: TABLE; Schema: public; Owner: pi-003
+--
+
+CREATE TABLE public.graph (
+    graphid integer NOT NULL,
+    name character varying(64) NOT NULL
+);
+
+
+ALTER TABLE public.graph OWNER TO "pi-003";
+
+--
+-- Name: graph_graphid_seq; Type: SEQUENCE; Schema: public; Owner: pi-003
+--
+
+CREATE SEQUENCE public.graph_graphid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.graph_graphid_seq OWNER TO "pi-003";
+
+--
+-- Name: graph_graphid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pi-003
+--
+
+ALTER SEQUENCE public.graph_graphid_seq OWNED BY public.graph.graphid;
+
+
+--
+-- Name: node; Type: TABLE; Schema: public; Owner: pi-003
+--
+
+CREATE TABLE public.node (
+    nodeid integer NOT NULL,
+    name character varying(64) NOT NULL,
+    graphid bigint NOT NULL,
+    nodetype bigint NOT NULL,
+    classification bigint NOT NULL,
+    copywriteowner character varying(128) NOT NULL,
+    version character varying(32) NOT NULL,
+    payload json NOT NULL
+);
+
+
+ALTER TABLE public.node OWNER TO "pi-003";
+
+--
+-- Name: nodes_nodeid_seq; Type: SEQUENCE; Schema: public; Owner: pi-003
+--
+
+CREATE SEQUENCE public.nodes_nodeid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.nodes_nodeid_seq OWNER TO "pi-003";
+
+--
+-- Name: nodes_nodeid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pi-003
+--
+
+ALTER SEQUENCE public.nodes_nodeid_seq OWNED BY public.node.nodeid;
+
+
+--
+-- Name: nodetype; Type: TABLE; Schema: public; Owner: pi-003
+--
+
+CREATE TABLE public.nodetype (
+    nodetypeid integer NOT NULL,
+    name character varying(64) NOT NULL,
+    fields json NOT NULL,
+    settings json NOT NULL
+);
+
+
+ALTER TABLE public.nodetype OWNER TO "pi-003";
+
+--
+-- Name: nodetype_nodetypeid_seq; Type: SEQUENCE; Schema: public; Owner: pi-003
+--
+
+CREATE SEQUENCE public.nodetype_nodetypeid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.nodetype_nodetypeid_seq OWNER TO "pi-003";
+
+--
+-- Name: nodetype_nodetypeid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pi-003
+--
+
+ALTER SEQUENCE public.nodetype_nodetypeid_seq OWNED BY public.nodetype.nodetypeid;
+
+
+--
+-- Name: edge edgeid; Type: DEFAULT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.edge ALTER COLUMN edgeid SET DEFAULT nextval('public.edges_edgeid_seq'::regclass);
+
+
+--
+-- Name: edgetype edgetypeid; Type: DEFAULT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.edgetype ALTER COLUMN edgetypeid SET DEFAULT nextval('public.edgetype_edgetypeid_seq'::regclass);
+
+
+--
+-- Name: graph graphid; Type: DEFAULT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.graph ALTER COLUMN graphid SET DEFAULT nextval('public.graph_graphid_seq'::regclass);
+
+
+--
+-- Name: node nodeid; Type: DEFAULT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.node ALTER COLUMN nodeid SET DEFAULT nextval('public.nodes_nodeid_seq'::regclass);
+
+
+--
+-- Name: nodetype nodetypeid; Type: DEFAULT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.nodetype ALTER COLUMN nodetypeid SET DEFAULT nextval('public.nodetype_nodetypeid_seq'::regclass);
+
+
+--
+-- Data for Name: edge; Type: TABLE DATA; Schema: public; Owner: pi-003
+--
+
+COPY public.edge (edgeid, edgetypeid, head_node, tail_node) FROM stdin;
+1	10	1	4
+2	10	4	7
+3	10	2	5
+4	10	5	8
+5	10	3	6
+6	10	6	9
+\.
+
+
+--
+-- Data for Name: edgetype; Type: TABLE DATA; Schema: public; Owner: pi-003
+--
+
+COPY public.edgetype (edgetypeid, name) FROM stdin;
+10	link
+\.
+
+
+--
+-- Data for Name: graph; Type: TABLE DATA; Schema: public; Owner: pi-003
+--
+
+COPY public.graph (graphid, name) FROM stdin;
+3	DO-178C
+\.
+
+
+--
+-- Data for Name: node; Type: TABLE DATA; Schema: public; Owner: pi-003
+--
+
+COPY public.node (nodeid, name, graphid, nodetype, classification, copywriteowner, version, payload) FROM stdin;
+1	Test Result 1	3	1	10	Bob	v1	{}
+2	Test Result 2	3	1	10	Jim	v1	{}
+3	Test Result 3	3	1	10	Foo	v1	{}
+4	Test Procedure 1	3	2	10	Bob	v1	{}
+5	Test Procedure 2	3	2	10	Jim	v1	{}
+6	Test Procedure 3	3	2	10	Foo	v1	{}
+7	Test Case 1	3	4	10	Bob	v1	{}
+8	Test Case 2	3	4	10	Jim	v1	{}
+9	Test Case 3	3	4	10	Foo	v1	{}
+\.
+
+
+--
+-- Data for Name: nodetype; Type: TABLE DATA; Schema: public; Owner: pi-003
+--
+
+COPY public.nodetype (nodetypeid, name, fields, settings) FROM stdin;
+1	Test Results	{}	{}
+2	Test Procedures	{}	{}
+4	Test Cases	{}	{}
+\.
+
+
+--
+-- Name: edges_edgeid_seq; Type: SEQUENCE SET; Schema: public; Owner: pi-003
+--
+
+SELECT pg_catalog.setval('public.edges_edgeid_seq', 6, true);
+
+
+--
+-- Name: edgetype_edgetypeid_seq; Type: SEQUENCE SET; Schema: public; Owner: pi-003
+--
+
+SELECT pg_catalog.setval('public.edgetype_edgetypeid_seq', 10, true);
+
+
+--
+-- Name: graph_graphid_seq; Type: SEQUENCE SET; Schema: public; Owner: pi-003
+--
+
+SELECT pg_catalog.setval('public.graph_graphid_seq', 3, true);
+
+
+--
+-- Name: nodes_nodeid_seq; Type: SEQUENCE SET; Schema: public; Owner: pi-003
+--
+
+SELECT pg_catalog.setval('public.nodes_nodeid_seq', 9, true);
+
+
+--
+-- Name: nodetype_nodetypeid_seq; Type: SEQUENCE SET; Schema: public; Owner: pi-003
+--
+
+SELECT pg_catalog.setval('public.nodetype_nodetypeid_seq', 4, true);
+
+
+--
+-- Name: edge edges_pkey; Type: CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.edge
+    ADD CONSTRAINT edges_pkey PRIMARY KEY (edgeid);
+
+
+--
+-- Name: edgetype edgetype_name_unique; Type: CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.edgetype
+    ADD CONSTRAINT edgetype_name_unique UNIQUE (name);
+
+
+--
+-- Name: edgetype edgetype_pkey; Type: CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.edgetype
+    ADD CONSTRAINT edgetype_pkey PRIMARY KEY (edgetypeid);
+
+
+--
+-- Name: graph graph_pkey1; Type: CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.graph
+    ADD CONSTRAINT graph_pkey1 PRIMARY KEY (graphid);
+
+
+--
+-- Name: node nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.node
+    ADD CONSTRAINT nodes_pkey PRIMARY KEY (nodeid);
+
+
+--
+-- Name: nodetype nodetype_pkey; Type: CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.nodetype
+    ADD CONSTRAINT nodetype_pkey PRIMARY KEY (nodetypeid);
+
+
+--
+-- Name: graph unique_graph_name; Type: CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.graph
+    ADD CONSTRAINT unique_graph_name UNIQUE (name);
+
+
+--
+-- Name: nodetype unique_nodetype_name; Type: CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.nodetype
+    ADD CONSTRAINT unique_nodetype_name UNIQUE (name);
+
+
+--
+-- Name: edge edges_edgetypeid_foreign; Type: FK CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.edge
+    ADD CONSTRAINT edges_edgetypeid_foreign FOREIGN KEY (edgetypeid) REFERENCES public.edgetype(edgetypeid);
+
+
+--
+-- Name: edge edges_head_nodeid_foreign; Type: FK CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.edge
+    ADD CONSTRAINT edges_head_nodeid_foreign FOREIGN KEY (head_node) REFERENCES public.node(nodeid);
+
+
+--
+-- Name: edge edges_tail_nodeid_foreign; Type: FK CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.edge
+    ADD CONSTRAINT edges_tail_nodeid_foreign FOREIGN KEY (tail_node) REFERENCES public.node(nodeid);
+
+
+--
+-- Name: node nodes_graphid_foreign; Type: FK CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.node
+    ADD CONSTRAINT nodes_graphid_foreign FOREIGN KEY (graphid) REFERENCES public.graph(graphid);
+
+
+--
+-- Name: node nodes_nodetype_foreign; Type: FK CONSTRAINT; Schema: public; Owner: pi-003
+--
+
+ALTER TABLE ONLY public.node
+    ADD CONSTRAINT nodes_nodetype_foreign FOREIGN KEY (nodetype) REFERENCES public.nodetype(nodetypeid);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
